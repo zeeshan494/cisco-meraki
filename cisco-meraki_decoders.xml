@@ -1,0 +1,73 @@
+<decoder name="meraki">
+  <prematch type="pcre2">^\d+\s+\d+\.\d+\s+\S+\s+events\s+</prematch>
+</decoder>
+
+<!-- Content filtering block -->
+<decoder name="meraki">
+  <parent>meraki</parent>
+  <regex type="pcre2">^(\d+)\s+(\d+\.\d+)\s+(\S+)\s+events\s+(content_filtering_block)\s+url='([^']*)'\s+category0='([^']*)'\s+server='([^':]+):(\d+)'\s+client_mac='([^']*)'</regex>
+  <order>meraki_version,meraki_epoch,meraki_device,meraki_event_type,meraki_url,meraki_category,dstip,dstport,meraki_client_mac</order>
+</decoder>
+
+<!-- Device packet flood start -->
+<decoder name="meraki">
+  <parent>meraki</parent>
+  <regex type="pcre2">^(\d+)\s+(\d+\.\d+)\s+(\S+)\s+events\s+type=(device_packet_flood)\s+packet='([^']*)'\s+device='([^']*)'\s+radio='([^']*)'\s+bssid='([^']*)'\s+dst='([^']*)'\s+band='([^']*)'\s+channel='([^']*)'\s+state='([^']*)'\s+alarm_id='([^']*)'\s+dos_count='([^']*)'\s+inter_arrival='([^']*)'</regex>
+  <order>meraki_version,meraki_epoch,meraki_device,meraki_event_type,meraki_packet,meraki_wireless_device,meraki_radio,meraki_bssid,meraki_dst_mac,meraki_band,meraki_channel,meraki_state,meraki_alarm_id,meraki_dos_count,meraki_inter_arrival</order>
+</decoder>
+
+<!-- Device packet flood end -->
+<decoder name="meraki">
+  <parent>meraki</parent>
+  <regex type="pcre2">^(\d+)\s+(\d+\.\d+)\s+(\S+)\s+events\s+type=(device_packet_flood)\s+radio='([^']*)'\s+state='([^']*)'\s+alarm_id='([^']*)'\s+reason='([^']*)'</regex>
+  <order>meraki_version,meraki_epoch,meraki_device,meraki_event_type,meraki_radio,meraki_state,meraki_alarm_id,meraki_reason</order>
+</decoder>
+
+<!-- Packet flood start -->
+<decoder name="meraki">
+  <parent>meraki</parent>
+  <regex type="pcre2">^(\d+)\s+(\d+\.\d+)\s+(\S+)\s+events\s+type=(packet_flood)\s+packet='([^']*)'\s+radio='([^']*)'\s+bssid='([^']*)'\s+dst='([^']*)'\s+band='([^']*)'\s+channel='([^']*)'\s+state='([^']*)'\s+alarm_id='([^']*)'\s+dos_count='([^']*)'\s+inter_arrival='([^']*)'</regex>
+  <order>meraki_version,meraki_epoch,meraki_device,meraki_event_type,meraki_packet,meraki_radio,meraki_bssid,meraki_dst_mac,meraki_band,meraki_channel,meraki_state,meraki_alarm_id,meraki_dos_count,meraki_inter_arrival</order>
+</decoder>
+
+<!-- Packet flood end -->
+<decoder name="meraki">
+  <parent>meraki</parent>
+  <regex type="pcre2">^(\d+)\s+(\d+\.\d+)\s+(\S+)\s+events\s+type=(packet_flood)\s+radio='([^']*)'\s+state='([^']*)'\s+alarm_id='([^']*)'\s+reason='([^']*)'</regex>
+  <order>meraki_version,meraki_epoch,meraki_device,meraki_event_type,meraki_radio,meraki_state,meraki_alarm_id,meraki_reason</order>
+</decoder>
+
+<!-- DHCP lease -->
+<decoder name="meraki">
+  <parent>meraki</parent>
+  <regex type="pcre2">^(\d+)\s+(\d+\.\d+)\s+(\S+)\s+events\s+dhcp\s+lease\s+of\s+ip\s+(\S+)\s+from\s+mx\s+mac\s+(\S+)\s+for\s+client\s+mac\s+(\S+)\s+from\s+router\s+(\S+)\s+on\s+subnet\s+(\S+)\s+with\s+dns\s+(.+)$</regex>
+  <order>meraki_version,meraki_epoch,meraki_device,meraki_dhcp_ip,meraki_mx_mac,meraki_client_mac,meraki_router_ip,meraki_subnet,meraki_dns</order>
+</decoder>
+
+<!-- Wireless association -->
+<decoder name="meraki">
+  <parent>meraki</parent>
+  <regex type="pcre2">^(\d+)\s+(\d+\.\d+)\s+(\S+)\s+events\s+type=(association)\s+radio='([^']*)'\s+vap='([^']*)'\s+client_mac='([^']*)'\s+last_known_client_ip='([^']*)'\s+band='([^']*)'\s+channel='([^']*)'\s+rssi='([^']*)'\s+aid='([^']*)'</regex>
+  <order>meraki_version,meraki_epoch,meraki_device,meraki_event_type,meraki_radio,meraki_vap,meraki_client_mac,srcip,meraki_band,meraki_channel,meraki_rssi,meraki_aid</order>
+</decoder>
+
+<!-- WPA auth -->
+<decoder name="meraki">
+  <parent>meraki</parent>
+  <regex type="pcre2">^(\d+)\s+(\d+\.\d+)\s+(\S+)\s+events\s+type=(wpa_auth)\s+radio='([^']*)'\s+vap='([^']*)'\s+client_mac='([^']*)'\s+last_known_client_ip='([^']*)'\s+aid='([^']*)'</regex>
+  <order>meraki_version,meraki_epoch,meraki_device,meraki_event_type,meraki_radio,meraki_vap,meraki_client_mac,srcip,meraki_aid</order>
+</decoder>
+
+<!-- WPA deauth -->
+<decoder name="meraki">
+  <parent>meraki</parent>
+  <regex type="pcre2">^(\d+)\s+(\d+\.\d+)\s+(\S+)\s+events\s+type=(wpa_deauth)\s+radio='([^']*)'\s+vap='([^']*)'\s+client_mac='([^']*)'\s+aid='([^']*)'</regex>
+  <order>meraki_version,meraki_epoch,meraki_device,meraki_event_type,meraki_radio,meraki_vap,meraki_client_mac,meraki_aid</order>
+</decoder>
+
+<!-- Generic fallback for any Meraki event -->
+<decoder name="meraki">
+  <parent>meraki</parent>
+  <regex type="pcre2">^(\d+)\s+(\d+\.\d+)\s+(\S+)\s+events\s+(.+)$</regex>
+  <order>meraki_version,meraki_epoch,meraki_device,meraki_raw_event</order>
+</decoder>
